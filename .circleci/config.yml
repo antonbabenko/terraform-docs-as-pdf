@@ -1,0 +1,98 @@
+version: 2
+
+references:
+  update_submodules: &update_submodules
+    run:
+      name: Update git submodules
+      command: |
+        git submodule update --init --remote --recursive
+
+  install_dependencies: &install_dependencies
+    run:
+      name: Install dependencies
+      command: |
+        sudo apt-get update
+
+        sudo apt-get install patch ghostscript nano
+
+        # Install wkhtmltopdf
+        mkdir wkhtmltopdf_download
+        cd wkhtmltopdf_download
+        wget https://downloads.wkhtmltopdf.org/0.12/0.12.5/wkhtmltox_0.12.5-1.trusty_amd64.deb
+        sudo dpkg -i ./wkhtmltox_0.12.5-1.trusty_amd64.deb || sudo apt-get --fix-broken install
+        cd ..
+        rm -rf wkhtmltopdf_download/
+
+        # Install git-lfs - https://github.com/git-lfs/git-lfs/wiki/Installation#ubuntu
+        sudo add-apt-repository ppa:git-core/ppa -y
+        curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash
+        sudo apt-get install git-lfs
+        git lfs install
+
+        # verify versions
+        grep --version
+        sed --version
+        wkhtmltopdf --version
+        gs --version
+
+  run_website_locally_and_generate_all: &run_website_locally_and_generate_all
+    run:
+      name: Run website locally (in background) and generate all pdfs
+      environment:
+        GIT_USER_EMAIL: anton+betajobot@antonbabenko.com
+        GIT_USER_NAME: betajobot
+      command: |
+        echo "Patch terraform-website/Makefile to remove --tty"
+        patch terraform-website/Makefile bin/Makefile.patch
+
+        cd terraform-website
+
+        make website &
+
+        echo "Wait for site to start (30 minimum, sometimes internet may be slow)"
+        sleep 30
+
+        # Code from https://stackoverflow.com/a/42873372/550451
+        curl --fail \
+            --connect-timeout 5 \
+            --max-time 10 \
+            --retry 10 \
+            --retry-delay 2 \
+            --retry-max-time 40 \
+            'http://localhost:4567/' > /dev/null
+
+        cd ..
+
+        # Generate all while web-site is running
+        ./bin/generate.sh
+
+jobs:
+  build_all:
+    machine: true
+    working_directory: ~/project
+    steps:
+      - checkout
+      - *update_submodules
+      - *install_dependencies
+      - *run_website_locally_and_generate_all
+
+workflows:
+  version: 2
+  nightly:
+    triggers:
+      - schedule:
+          cron: "0 0 * * *"
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - build_all
+
+
+  build_all:
+    jobs:
+      - build_all:
+          filters:
+            branches:
+              only: master

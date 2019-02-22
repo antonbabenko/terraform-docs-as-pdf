@@ -1,0 +1,3 @@
+[submodule "terraform-website"]
+	path = terraform-website
+	url = https://github.com/hashicorp/terraform-website.git
