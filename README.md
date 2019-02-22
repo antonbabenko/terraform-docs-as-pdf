@@ -18,7 +18,7 @@
 
 1. Don't have Dropbox account? Open one using [my referral link](https://db.tt/5Bhs91K9Wb) and I will get 500M extra. :)
 
-1. To get updates automatically to your Dropbox folder - click [this shared link](https://www.dropbox.com/sh/pfj9e1m5d7nqhp3/AAAqW1OI3oYPa4UXfYb4fLGaa), then choose "Download" and "Save to my Dropbox".
+1. To get PDFs to your Dropbox folder - click [this shared link](https://www.dropbox.com/sh/pfj9e1m5d7nqhp3/AAAqW1OI3oYPa4UXfYb4fLGaa), then choose "Download" and "Save to my Dropbox".
 
 1. Alternatively, browse PDFs online - [https://www.dropbox.com/sh/pfj9e1m5d7nqhp3/AAAqW1OI3oYPa4UXfYb4fLGaa](https://www.dropbox.com/sh/pfj9e1m5d7nqhp3/AAAqW1OI3oYPa4UXfYb4fLGaa)
 
