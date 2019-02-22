@@ -24,10 +24,10 @@ references:
         rm -rf wkhtmltopdf_download/
 
         # Install git-lfs - https://github.com/git-lfs/git-lfs/wiki/Installation#ubuntu
-        sudo add-apt-repository ppa:git-core/ppa -y
-        curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash
-        sudo apt-get install git-lfs
-        git lfs install
+        # sudo add-apt-repository ppa:git-core/ppa -y
+        # curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash
+        # sudo apt-get install git-lfs
+        # git lfs install
 
         # verify versions
         grep --version
