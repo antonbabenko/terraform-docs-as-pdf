@@ -174,6 +174,7 @@ function upload_pdf_files {
 
   done
 
+
 # List all filenames
 #curl -X POST https://api.dropboxapi.com/2/files/list_folder \
 #    --header "Authorization: Bearer $DROPBOX_TOKEN" \
@@ -195,6 +196,12 @@ function git_config_commit_and_push {
   git commit -m "[skip ci] Updated documentation"
   git push -q https://${GITHUB_PERSONAL_TOKEN}@github.com/antonbabenko/terraform-docs-as-pdf.git master
 
+}
+
+function update_readme {
+  now=$(date --rfc-3339=date)
+
+  sed -i -r "s|### Latest update: .*|### Latest update: $now|g" README.md
 }
 
 echo "Verified installed dependencies..."
@@ -220,6 +227,9 @@ combine_pdf_files
 
 echo "Uploading PDF files..."
 upload_pdf_files
+
+echo "Updating README..."
+update_readme
 
 echo "Upload PDF files to github..."
 git_config_commit_and_push
