@@ -41,6 +41,7 @@ references:
       environment:
         GIT_USER_EMAIL: anton+betajobot@antonbabenko.com
         GIT_USER_NAME: betajobot
+      no_output_timeout: 3h
       command: |
         echo "Patch terraform-website/Makefile to remove --tty"
         patch terraform-website/Makefile bin/Makefile.patch
@@ -69,7 +70,6 @@ references:
 jobs:
   build_all:
     machine: true
-    resource_class: large
     working_directory: ~/project
     steps:
       - checkout
