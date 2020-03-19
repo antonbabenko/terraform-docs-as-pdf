@@ -69,6 +69,7 @@ references:
 jobs:
   build_all:
     machine: true
+    resource_class: large
     working_directory: ~/project
     steps:
       - checkout
