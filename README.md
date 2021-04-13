@@ -38,4 +38,4 @@ MIT Licensed. See LICENSE for full details.
 
 Terraform documentation itself is licensed under MPL 2.0. See [LICENSE.md](https://github.com/hashicorp/terraform-website/blob/master/LICENSE.md) for more details.
 
-### Latest update: 2021-04-12
+### Latest update: 2021-04-13
