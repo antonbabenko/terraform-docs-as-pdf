@@ -60,7 +60,7 @@ references:
             --retry 10 \
             --retry-delay 2 \
             --retry-max-time 40 \
-            'http://localhost:4567/' > /dev/null
+            'http://localhost:3000/' > /dev/null
 
         cd ..
 

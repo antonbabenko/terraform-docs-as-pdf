@@ -5,6 +5,6 @@
  		--interactive \
  		--rm \
 -		--tty \
- 		--publish "4567:4567" \
+ 		--publish "3000:3000" \
  		--publish "35729:35729" \
  		-e "DEPLOY_ENV=${DEPLOY_ENV}" \
