@@ -5,7 +5,7 @@ references:
     run:
       name: Update git submodules
       command: |
-        git submodule update --init --remote --recursive
+        git submodule update --init --remote
 
   install_dependencies: &install_dependencies
     run:
