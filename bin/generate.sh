@@ -1,12 +1,12 @@
 #!/bin/bash
 
-TARGET_SITE="http://localhost:4567"
+TARGET_SITE="http://localhost:3000"
 
 # Get all urls
 # wget --spider --force-html -r -l5 "$TARGET_SITE" 2>&1 | grep '^--' | awk '{ print $3 }' | grep -v '\.\(css\|js\|png\|gif\|jpg|svg|woff|ttf|zip|json\)$' > url-list-5.txt
 
 # Using sitemap (better)
-# curl -O http://localhost:4567/sitemap.xml
+# curl -O http://localhost:3000/sitemap.xml
 
 # gnu grep
 #ggrep -Po 'http(s?)://[^ \"()\<>]*' sitemap.xml
