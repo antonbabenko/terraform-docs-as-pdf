@@ -50,8 +50,8 @@ references:
 
         make website &
 
-        echo "Wait for site to start (30 minimum, sometimes internet may be slow)"
-        sleep 30
+        echo "Wait for site to start (30 minimum, sometimes internet may be slow, so 300 is better)"
+        sleep 300
 
         # Code from https://stackoverflow.com/a/42873372/550451
         curl --fail \
