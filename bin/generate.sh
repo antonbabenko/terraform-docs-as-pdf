@@ -158,19 +158,30 @@ function combine_pdf_files {
 
 function upload_pdf_files {
 
+  local file http_status
+
   all_pdfs=($(\ls -1 *.pdf))
 
   for file in "${all_pdfs[@]}"; do
 
     echo "Uploading ${file}"
 
-    curl -X POST https://content.dropboxapi.com/2/files/upload \
+    if ! http_status=$(curl --silent --show-error --output /dev/null --write-out '%{http_code}' \
+      -X POST https://content.dropboxapi.com/2/files/upload \
       --header "Authorization: Bearer $DROPBOX_TOKEN" \
       --header "Dropbox-API-Arg: {\"path\": \"/terraform-docs-as-pdf/${file}\",\"mode\": \"overwrite\",\"autorename\": false,\"mute\": false,\"strict_conflict\": false}" \
       --header "Content-Type: application/octet-stream" \
-      --data-binary @$file
+      --data-binary "@$file"); then
+      echo "Upload request failed for ${file}; keeping the local PDF" >&2
+      return 1
+    fi
 
-    rm -f $file
+    if [[ ! "$http_status" =~ ^2[0-9]{2}$ ]]; then
+      echo "Upload returned HTTP ${http_status:-unknown} for ${file}; keeping the local PDF" >&2
+      return 1
+    fi
+
+    rm -f -- "$file"
 
   done
 
@@ -204,6 +215,8 @@ function update_readme {
   sed -i -r "s|### Latest update: .*|### Latest update: $now|g" README.md
 }
 
+if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
+
 echo "Verified installed dependencies..."
 verify_dependencies
 
@@ -226,10 +239,15 @@ echo "Combining PDF files..."
 combine_pdf_files
 
 echo "Uploading PDF files..."
-upload_pdf_files
+if ! upload_pdf_files; then
+  echo "PDF upload failed; stopping before README update or Git publication" >&2
+  exit 1
+fi
 
 echo "Updating README..."
 update_readme
 
 echo "Upload PDF files to github..."
 git_config_commit_and_push
+
+fi
